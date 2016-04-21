@@ -21,6 +21,7 @@ RUN apt-get update \
     php5-fpm \
     php5-cli \
     php5-mysql \
+    php5-pgsql \
     php5-mcrypt \
     php5-curl \
     php5-gd \
