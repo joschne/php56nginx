@@ -69,10 +69,4 @@ VOLUME ["/var/www", "/etc/nginx/sites-available", "/etc/nginx/sites-enabled"]
 
 WORKDIR /var/www
 
-# Make Laravel working
-RUN chmod -R 777 $WORKDIR/storage/framework/views/
-RUN cd $WORKDIR && php artisan migrate
-
-
-
 EXPOSE 80 9000
