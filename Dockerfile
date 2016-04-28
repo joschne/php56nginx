@@ -55,8 +55,6 @@ RUN echo "xdebug.max_nesting_level = 1000" >> /etc/php5/fpm/conf.d/40-custom.ini
 RUN echo "xdebug.profiler_enable_trigger = 1" >> /etc/php5/fpm/conf.d/40-custom.ini
 RUN echo "xdebug.profiler_output_dir = \"/var/log\"" >> /etc/php5/fpm/conf.d/40-custom.ini
 
-
-
 # Add nginx service
 RUN mkdir /etc/service/nginx
 ADD build/nginx/run.sh /etc/service/nginx/run
@@ -70,5 +68,11 @@ RUN chmod +x /etc/service/phpfpm/run
 VOLUME ["/var/www", "/etc/nginx/sites-available", "/etc/nginx/sites-enabled"]
 
 WORKDIR /var/www
+
+# Make Laravel working
+RUN chmod -R 777 $WORKDIR/storage/framework/views/
+RUN cd $WORKDIR && php artisan migrate
+
+
 
 EXPOSE 80 9000
