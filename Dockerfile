@@ -25,7 +25,8 @@ RUN apt-get update \
     php5-mcrypt \
     php5-curl \
     php5-gd \
-    php5-intl
+    php5-intl \
+    php5-xdebug
 
 RUN apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* \
@@ -39,11 +40,22 @@ RUN mkdir -p /var/www
 
 # Configure PHP
 RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php5/fpm/php.ini
-RUN sed -i "s/;date.timezone =.*/date.timezone = Asia\/Kolkata/" /etc/php5/fpm/php.ini
+RUN sed -i "s/;date.timezone =.*/date.timezone = Europe\/Paris/" /etc/php5/fpm/php.ini
 RUN sed -i -e "s/;daemonize\s*=\s*yes/daemonize = no/g" /etc/php5/fpm/php-fpm.conf
 RUN sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php5/cli/php.ini
-RUN sed -i "s/;date.timezone =.*/date.timezone = Asia\/Kolkata/" /etc/php5/cli/php.ini
+RUN sed -i "s/;date.timezone =.*/date.timezone = Europe\/Paris/" /etc/php5/cli/php.ini
 RUN php5enmod mcrypt
+
+# Configure PHP to enable XDebug
+RUN touch /etc/php5/fpm/conf.d/40-custom.ini
+RUN echo "zend_extension = xdebug.so" >> /etc/php5/fpm/conf.d/40-custom.ini
+RUN echo "xdebug.remote_enable = 1" >> /etc/php5/fpm/conf.d/40-custom.ini
+RUN echo "xdebug.renite_enable = 1" >> /etc/php5/fpm/conf.d/40-custom.ini
+RUN echo "xdebug.max_nesting_level = 1000" >> /etc/php5/fpm/conf.d/40-custom.ini
+RUN echo "xdebug.profiler_enable_trigger = 1" >> /etc/php5/fpm/conf.d/40-custom.ini
+RUN echo "xdebug.profiler_output_dir = \"/var/log\"" >> /etc/php5/fpm/conf.d/40-custom.ini
+
+
 
 # Add nginx service
 RUN mkdir /etc/service/nginx
@@ -59,4 +71,4 @@ VOLUME ["/var/www", "/etc/nginx/sites-available", "/etc/nginx/sites-enabled"]
 
 WORKDIR /var/www
 
-EXPOSE 80
+EXPOSE 80 9000
