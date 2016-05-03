@@ -49,11 +49,16 @@ RUN php5enmod mcrypt
 # Configure PHP to enable XDebug
 RUN touch /etc/php5/fpm/conf.d/40-custom.ini
 RUN echo "zend_extension = xdebug.so" >> /etc/php5/fpm/conf.d/40-custom.ini
-RUN echo "xdebug.remote_enable = 1" >> /etc/php5/fpm/conf.d/40-custom.ini
-RUN echo "xdebug.renite_enable = 1" >> /etc/php5/fpm/conf.d/40-custom.ini
-RUN echo "xdebug.max_nesting_level = 1000" >> /etc/php5/fpm/conf.d/40-custom.ini
-RUN echo "xdebug.profiler_enable_trigger = 1" >> /etc/php5/fpm/conf.d/40-custom.ini
+RUN echo "xdebug.remote_host = 172.17.0.1" >> /etc/php5/fpm/conf.d/40-custom.ini
+RUN echo "xdebug.default_enable = 1" >> /etc/php5/fpm/conf.d/40-custom.ini
+RUN echo "xdebug.remote_enable = on" >> /etc/php5/fpm/conf.d/40-custom.ini
+RUN echo "xdebug.remote_port = 9000" >> /etc/php5/fpm/conf.d/40-custom.ini
+RUN echo "xdebug.remote_connect_back = On" >> /etc/php5/fpm/conf.d/40-custom.ini
+RUN echo "xdebug.remote_handler = dbgp" >> /etc/php5/fpm/conf.d/40-custom.ini
+RUN echo "xdebug.profiler_enable = 0" >> /etc/php5/fpm/conf.d/40-custom.ini
 RUN echo "xdebug.profiler_output_dir = \"/var/log\"" >> /etc/php5/fpm/conf.d/40-custom.ini
+RUN echo "xdebug.remote_log = \"/var/www/log\"" >> /etc/php5/fpm/conf.d/40-custom.ini
+
 
 # Add nginx service
 RUN mkdir /etc/service/nginx
