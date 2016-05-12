@@ -26,7 +26,9 @@ RUN apt-get update \
     php5-curl \
     php5-gd \
     php5-intl \
-    php5-xdebug
+    php5-xdebug \
+    php5-xsl
+
 
 RUN apt-get clean \
 	&& rm -rf /var/lib/apt/lists/* \
